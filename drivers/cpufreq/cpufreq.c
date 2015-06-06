@@ -626,7 +626,7 @@ static ssize_t show_bios_limit(struct cpufreq_policy *policy, char *buf)
 #ifdef CONFIG_CPU_VOLTAGE_TABLE
 extern ssize_t show_UV_mV_table(struct cpufreq_policy *policy, char *buf);
 extern ssize_t store_UV_mV_table(struct cpufreq_policy *policy,
-const char *buf, size_t count);
+				 const char *buf, size_t count);
 #endif
 
 cpufreq_freq_attr_ro_perm(cpuinfo_cur_freq, 0400);
@@ -661,9 +661,9 @@ static struct attribute *default_attrs[] = {
 	&scaling_driver.attr,
 	&scaling_available_governors.attr,
 	&scaling_setspeed.attr,
-	#ifdef CONFIG_CPU_VOLTAGE_TABLE
+#ifdef CONFIG_CPU_VOLTAGE_TABLE
 	&UV_mV_table.attr,
-	#endif
+#endif
 	NULL
 };
 
@@ -1024,6 +1024,8 @@ static int cpufreq_add_dev(struct device *dev, struct subsys_interface *sif)
 	}
 	policy->user_policy.min = policy->min;
 	policy->user_policy.max = policy->max;
+
+	policy->util = 0;
 
 	blocking_notifier_call_chain(&cpufreq_policy_notifier_list,
 				     CPUFREQ_START, policy);
